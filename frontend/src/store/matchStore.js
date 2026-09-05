@@ -83,8 +83,13 @@ const initialMatchState = {
     showPartnership: true,
     showBowlerStats: true,
     showBatsmanStats: true,
+    showTarget: false,
+    showTeams: true,
+    showPlayerStats: true,
+    showBallByBall: true,
   },
   recentBalls: [], // Array of ball events for display
+  currentEvent: null, // For triggering animations (HIT_SIX, HIT_FOUR, FALL_OF_WICKET)
 };
 
 const useMatchStore = create((set, get) => ({
@@ -184,6 +189,22 @@ const useMatchStore = create((set, get) => ({
     });
   },
 
+  // Add a run (convenience wrapper)
+  addRun: (runs) => {
+    get().updateScore(runs, false, null);
+    // Trigger animation for boundaries
+    if (runs === 4) {
+      get().triggerEvent('HIT_FOUR');
+    } else if (runs === 6) {
+      get().triggerEvent('HIT_SIX');
+    }
+  },
+
+  // Add an extra
+  addExtra: (type) => {
+    get().updateScore(0, true, type);
+  },
+
   // Change current bowler
   changeBowler: (bowler) => {
     const state = get();
@@ -245,6 +266,9 @@ const useMatchStore = create((set, get) => ({
     const { match } = state;
     const battingTeamKey = match.battingTeam;
 
+    // Trigger wicket animation
+    get().triggerEvent('FALL_OF_WICKET');
+
     set({
       match: {
         ...match,
@@ -283,6 +307,39 @@ const useMatchStore = create((set, get) => ({
     });
   },
 
+  // Trigger an event animation (SIX, FOUR, WICKET)
+  triggerEvent: (eventType) => {
+    set({
+      match: {
+        ...get().match,
+        currentEvent: {
+          type: eventType,
+          timestamp: Date.now(),
+        },
+      },
+    });
+
+    // Clear the event after 3 seconds
+    setTimeout(() => {
+      set({
+        match: {
+          ...get().match,
+          currentEvent: null,
+        },
+      });
+    }, 3000);
+  },
+
+  // Clear current event
+  clearEvent: () => {
+    set({
+      match: {
+        ...get().match,
+        currentEvent: null,
+      },
+    });
+  },
+
   // Reset the entire match state
   resetMatch: () => {
     set({ match: JSON.parse(JSON.stringify(initialMatchState)) });
@@ -305,6 +362,7 @@ export const useCurrentBowler = () => useMatchStore((state) => state.match.curre
 export const useExtras = () => useMatchStore((state) => state.match.extras);
 export const useProOverlay = () => useMatchStore((state) => state.match.proOverlay);
 export const useRecentBalls = () => useMatchStore((state) => state.match.recentBalls);
+export const useCurrentEvent = () => useMatchStore((state) => state.match.currentEvent);
 
 export default useMatchStore;
 export { initialMatchState };

@@ -94,8 +94,13 @@ const initialMatchState = {
     showPartnership: true,
     showBowlerStats: true,
     showBatsmanStats: true,
+    showTarget: false,
+    showTeams: true,
+    showPlayerStats: true,
+    showBallByBall: true,
   },
   recentBalls: [],
+  currentEvent: null,
 };
 
 // Current match state
@@ -205,6 +210,20 @@ function processAction(action, payload) {
       matchState.currentOver.wickets += 1;
       matchState.currentBowler.wicketsTaken += 1;
       
+      // Trigger wicket event animation
+      triggerEvent('FALL_OF_WICKET');
+      
+      return { success: true };
+    }
+
+    case 'TRIGGER_EVENT': {
+      const { eventType } = payload;
+      
+      if (!eventType || !['HIT_SIX', 'HIT_FOUR', 'FALL_OF_WICKET'].includes(eventType)) {
+        return { success: false, error: 'Invalid event type' };
+      }
+      
+      triggerEvent(eventType);
       return { success: true };
     }
 
@@ -281,6 +300,13 @@ function updateScore(runs, isExtra = false, extraType = null) {
     // Update balls faced only for regular deliveries
     matchState.matchInfo[battingTeamKey].ballsFaced += 1;
     matchState.currentOver.balls.push(runs);
+    
+    // Auto-trigger events for boundaries
+    if (runs === 4) {
+      triggerEvent('HIT_FOUR');
+    } else if (runs === 6) {
+      triggerEvent('HIT_SIX');
+    }
   }
 
   // Update score
@@ -298,6 +324,22 @@ function updateScore(runs, isExtra = false, extraType = null) {
   if (matchState.recentBalls.length > 6) {
     matchState.recentBalls.shift();
   }
+}
+
+// Helper function to trigger event animations
+function triggerEvent(eventType) {
+  matchState.currentEvent = {
+    type: eventType,
+    timestamp: Date.now(),
+  };
+
+  // Clear the event after 3 seconds
+  setTimeout(() => {
+    if (matchState.currentEvent?.type === eventType) {
+      matchState.currentEvent = null;
+      io.emit('matchStateUpdate', matchState);
+    }
+  }, 3000);
 }
 
 // Socket.IO connection handling

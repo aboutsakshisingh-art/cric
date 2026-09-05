@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { useMatchStore } from '../store/matchStore';
+import { useMatchStore, useCurrentEvent } from '../store/matchStore';
 import Scoreboard from './Scoreboard';
+import EventAnimation from './EventAnimation';
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
 
 const LiveOverlay = () => {
   const { proOverlay, setMatchState } = useMatchStore();
+  const currentEvent = useCurrentEvent();
   const { showScore } = proOverlay;
 
   useEffect(() => {
@@ -39,14 +41,18 @@ const LiveOverlay = () => {
     };
   }, [setMatchState]);
 
-  // Hide entire overlay if showScore is false
-  if (!showScore) {
+  // Hide entire overlay if showScore is false and no event is active
+  if (!showScore && !currentEvent) {
     return null;
   }
 
   return (
     <div className="live-overlay-container">
-      <Scoreboard />
+      {/* Event Animation Popup - Full Screen */}
+      {currentEvent && <EventAnimation event={currentEvent} />}
+
+      {/* Scoreboard - Bottom Third */}
+      {showScore && <Scoreboard />}
     </div>
   );
 };
