@@ -1,0 +1,275 @@
+/* 
+ * Cricket Overlay Styles - OBS Browser Source Ready
+ * Optimized for 1920x1080 16:9 canvas
+ */
+
+/* Root container with transparent background for OBS */
+.live-overlay-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none; /* Allow clicks to pass through to video underneath */
+  z-index: 9999;
+}
+
+/* Scoreboard Container - Bottom Third Layout */
+.scoreboard-container {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1400px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color, #FFFFFF);
+}
+
+/* Main Score Bar */
+.scorebar-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--gradient-bg, linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%));
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+/* Team Info Section */
+.scorebar-team-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.team-short-name {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.score-display {
+  display: flex;
+  align-items: baseline;
+  font-size: 3.5rem;
+  font-weight: 900;
+}
+
+.runs {
+  font-size: 4rem;
+  color: var(--secondary-color, #FBBF24);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+.wickets {
+  font-size: 2.5rem;
+  opacity: 0.9;
+}
+
+.overs-display {
+  font-size: 1.5rem;
+  opacity: 0.8;
+  padding-left: 0.5rem;
+}
+
+/* Separator Line */
+.scorebar-separator {
+  width: 2px;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--secondary-color), transparent);
+  margin: 0 1.5rem;
+}
+
+/* Batsmen Stats */
+.batsmen-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.batsman-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.striker-row {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.batsman-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.striker-indicator {
+  color: var(--accent-color, #22C55E);
+  font-size: 1.5rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.batsman-runs {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--secondary-color, #FBBF24);
+  min-width: 40px;
+  text-align: right;
+}
+
+.batsman-balls {
+  opacity: 0.8;
+  font-size: 1rem;
+}
+
+/* Current Over Info Bar */
+.over-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.over-info-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.over-label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.over-balls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ball-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ball-0 { background-color: var(--ball-zero, #6B7280); }
+.ball-1 { background-color: var(--ball-one, #10B981); }
+.ball-2 { background-color: var(--ball-two, #3B82F6); }
+.ball-3 { background-color: var(--ball-three, #8B5CF6); }
+.ball-4 { background-color: var(--ball-four, #F59E0B); }
+.ball-5 { background-color: var(--ball-five, #EC4899); }
+.ball-6 { background-color: var(--ball-six, #EF4444); }
+.ball-w { background-color: var(--ball-wicket, #DC2626); }
+.ball-wide { background-color: var(--ball-wide, #F97316); }
+.ball-noBall { background-color: var(--ball-noBall, #DC2626); }
+
+/* Bowler Info */
+.bowler-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.bowler-name {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.bowler-fig {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Teams Banner */
+.teams-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  background: var(--background-color, rgba(30, 58, 138, 0.95));
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.team-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.team-full-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.innings-score {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.vs-divider {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--secondary-color, #FBBF24);
+  padding: 0 2rem;
+  opacity: 0.9;
+}
+
+/* Responsive adjustments for different OBS canvas sizes */
+@media (max-width: 1600px) {
+  .team-short-name { font-size: 2rem; }
+  .runs { font-size: 3.5rem; }
+  .wickets { font-size: 2rem; }
+}
+
+@media (max-width: 1200px) {
+  .scoreboard-container { width: 95%; }
+  .team-short-name { font-size: 1.8rem; }
+  .runs { font-size: 3rem; }
+  .batsmen-stats { min-width: 150px; }
+}
+
+/* Animation for score updates */
+@keyframes scoreUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.score-update-animation {
+  animation: scoreUpdate 0.3s ease-in-out;
+}
