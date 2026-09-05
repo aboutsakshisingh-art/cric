@@ -1,0 +1,17 @@
+{
+  "name": "cricket-match-app",
+  "version": "1.0.0",
+  "description": "Cricket match scoring application with real-time updates",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "keywords": ["cricket", "scoring", "real-time", "websocket"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
